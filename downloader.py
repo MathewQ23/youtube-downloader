@@ -8,6 +8,7 @@ from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 DOWNLOAD_DIR = Path.home() / "Downloads"
+APP_DIR = Path(__file__).resolve().parent
 RESOLUTIONS = {360, 720, 1080, 1440, 2160}
 NODE_PATH = Path.home() / ".nvm/versions/node/v22.22.1/bin/node"
 SPEED_TEST_BYTES = 4 * 1024 * 1024
@@ -42,6 +43,11 @@ def js_runtime_arg():
     return f"node:{node}" if node else "node"
 
 
+def ytdlp_command():
+    bundled = APP_DIR / "yt-dlp"
+    return str(bundled) if bundled.is_file() else "yt-dlp"
+
+
 def validate(url, resolution):
     parsed = urlparse(url)
     host = (parsed.hostname or "").lower()
@@ -61,7 +67,7 @@ def build_command(url, resolution):
     validate(url, resolution)
     DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
     command = [
-        "yt-dlp", "--no-playlist", "--js-runtimes", js_runtime_arg(),
+        ytdlp_command(), "--no-playlist", "--js-runtimes", js_runtime_arg(),
         "--newline", "--progress", "--concurrent-fragments", "8",
         "-f", video_format(resolution), "--merge-output-format", "mp4",
         "--progress-template",
@@ -98,7 +104,7 @@ def subtitle_options(data):
 
 def build_subtitle_command(url, language, automatic):
     command = [
-        "yt-dlp", "--no-playlist", "--js-runtimes", js_runtime_arg(),
+        ytdlp_command(), "--no-playlist", "--js-runtimes", js_runtime_arg(),
         "--skip-download", "--sub-langs", language, "--sub-format", "srt/best",
         "--convert-subs", "srt",
         "-o", str(DOWNLOAD_DIR / "%(title)s [%(id)s].%(ext)s"), url,
@@ -163,7 +169,7 @@ def fetch_metadata(url, resolution):
     validate(url, resolution)
     try:
         result = run_tracked(
-            ["yt-dlp", "--no-playlist", "--js-runtimes", js_runtime_arg(), "-J", url],
+            [ytdlp_command(), "--no-playlist", "--js-runtimes", js_runtime_arg(), "-J", url],
             timeout=20,
         )
     except subprocess.TimeoutExpired as error:

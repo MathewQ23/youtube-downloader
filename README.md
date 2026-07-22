@@ -27,7 +27,17 @@ sudo apt install python3-gi gir1.2-gtk-4.0 ffmpeg nodejs
 python3 -m pip install --user -U yt-dlp
 ```
 
-## 安装应用
+## 安装包
+
+从 [GitHub Releases](https://github.com/MathewQ23/youtube-downloader/releases) 下载最新版 `.deb`，然后安装：
+
+```bash
+sudo apt install ./youtube-downloader_1.0.0_all.deb
+```
+
+安装完成后，在 Ubuntu 的应用菜单中搜索“YouTube 下载器”。安装包已内置最新版 `yt-dlp`，系统仍需安装 GTK4、FFmpeg 和 Node.js；`apt` 会自动处理这些依赖。
+
+## 从源码安装
 
 ```bash
 git clone git@github.com:MathewQ23/youtube-downloader.git

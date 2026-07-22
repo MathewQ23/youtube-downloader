@@ -1,5 +1,7 @@
+import tempfile
 import unittest
 from io import BytesIO
+from pathlib import Path
 from unittest.mock import patch
 
 import downloader
@@ -47,6 +49,13 @@ class DownloaderTests(unittest.TestCase):
     def test_uses_absolute_node_runtime(self):
         runtime = downloader.js_runtime_arg()
         self.assertRegex(runtime, r"^node:/")
+
+    def test_prefers_bundled_ytdlp(self):
+        with tempfile.TemporaryDirectory() as directory:
+            binary = Path(directory) / "yt-dlp"
+            binary.write_text("binary")
+            with patch.object(downloader, "APP_DIR", Path(directory)):
+                self.assertEqual(downloader.ytdlp_command(), str(binary))
 
     def test_parses_progress_and_result(self):
         self.assertEqual(
