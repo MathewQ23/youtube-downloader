@@ -30,8 +30,8 @@ python3 -m pip install --user -U yt-dlp
 ## 运行
 
 ```bash
-git clone <你的仓库地址>
-cd youtube-downloader-extension
+git clone git@github.com:MathewQ23/youtube-downloader.git
+cd youtube-downloader
 python3 app.py
 ```
 
