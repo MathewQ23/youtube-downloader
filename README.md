@@ -29,7 +29,7 @@ python3 -m pip install --user -U yt-dlp
 
 ## 安装包
 
-从 [GitHub Releases](https://github.com/MathewQ23/youtube-downloader/releases) 下载最新版 `.deb`，然后安装：
+下载仓库中的 [`packages/youtube-downloader_1.0.0_all.deb`](https://github.com/MathewQ23/youtube-downloader/raw/main/packages/youtube-downloader_1.0.0_all.deb)，然后安装：
 
 ```bash
 sudo apt install ./youtube-downloader_1.0.0_all.deb
